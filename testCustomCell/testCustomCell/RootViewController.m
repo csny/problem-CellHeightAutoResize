@@ -19,8 +19,9 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // 挿入ボタンの設置と動作
+    // editボタンの設置
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    // addボタンの設置と動作
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     
@@ -43,6 +44,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     // Dispose of any resources that can be recreated.
 }
 
+// addボタンで呼ばれる動作
 - (void)insertNewObject:(id)sender
 {
     if (!_objects) {
@@ -59,9 +61,11 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     // データ挿入
     [_objects insertObject:dataDictionary atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    // テーブルビュー更新
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+// テーブルビュー更新で呼ばれる
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     CustomTableViewCell *customCell = (CustomTableViewCell *)cell;
@@ -111,12 +115,14 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     return 40.0;
 }
 
+// 指定したパスが、編集可能かどうかを返す
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
+// 指定したパスに対して、編集が行われたことを通知する
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
