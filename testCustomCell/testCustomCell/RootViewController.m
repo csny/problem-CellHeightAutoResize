@@ -33,10 +33,15 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     [self.tableView registerNib:[UINib nibWithNibName:TableViewCustomCellIdentifier bundle:nil]
      forCellReuseIdentifier:@"Cell"];
     // セルのプロトタイプを高さ計算用の変数に入れておく
-    _stubCell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    //_stubCell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    
+    // UITableViewAutomaticDimensionはiOS8から
+    // セルの高さの計算は Autolayout に任せる
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 40.0;
     
     // 文字列の配列の作成
-    _textArray = @[@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales diam sed turpis mattis dictum. In laoreet porta eleifend. Ut eu nibh sit amet est iaculis faucibus.", @"initWithBitmapDataPlanes:pixelsWide:pixelsHigh:bitsPerSample:samplesPerPixel:hasAlpha:isPlanar:colorSpaceName:bitmapFormat:bytesPerRow:bitsPerPixel:", @"祇辻飴葛蛸鯖鰯噌庖箸", @"Nam in vehicula mi.", @"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.", @"あのイーハトーヴォの\nすきとおった風、\n夏でも底に冷たさをもつ青いそら、\nうつくしい森で飾られたモーリオ市、\n郊外のぎらぎらひかる草の波。"];
+    _textArray = @[@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales diam sed turpis mattis dictum. In laoreet porta eleifend. Ut eu nibh sit amet est iaculis faucibus.",@"initWithBitmapDataPlanes:pixelsWide:pixelsHigh:bitsPerSample:samplesPerPixel:hasAlpha:isPlanar:colorSpaceName:bitmapFormat:bytesPerRow:bitsPerPixel:", @"祇辻飴葛蛸鯖鰯噌庖箸", @"Nam in vehicula mi.", @"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.", @"あのイーハトーヴォの\nすきとおった風、\n夏でも底に冷たさをもつ青いそら、\nうつくしい森で飾られたモーリオ市、\n郊外のぎらぎらひかる草の波。"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,6 +103,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     return cell;
 }
 
+/* UITableViewAutomaticDimensionで代替
 // セルの高さを可変にする
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -109,10 +115,11 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     //NSLog(@"heightForRow:%f", height);
     return height + 1;
 }
+*/
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40.0;
+    return tableView.estimatedRowHeight;
 }
 
 // 指定したパスが、編集可能かどうかを返す
