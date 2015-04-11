@@ -10,11 +10,9 @@
 #import "CustomTableViewCell.h"
 
 @interface RootViewController : UITableViewController
-{
-    NSMutableArray *_objects;
-    NSArray *_textArray;    // 追加
-    CustomTableViewCell *_stubCell;  // 追加
-}
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+
+@property NSMutableArray *outputArray;
+@property NSArray *textPool;    // 追加
+@property CustomTableViewCell *stubCell;  // 追加
 
 @end

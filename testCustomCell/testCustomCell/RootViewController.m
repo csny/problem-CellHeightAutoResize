@@ -41,7 +41,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     self.tableView.estimatedRowHeight = 40.0;
     
     // 文字列の配列の作成
-    _textArray = @[@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales diam sed turpis mattis dictum. In laoreet porta eleifend. Ut eu nibh sit amet est iaculis faucibus.",@"initWithBitmapDataPlanes:pixelsWide:pixelsHigh:bitsPerSample:samplesPerPixel:hasAlpha:isPlanar:colorSpaceName:bitmapFormat:bytesPerRow:bitsPerPixel:", @"祇辻飴葛蛸鯖鰯噌庖箸", @"Nam in vehicula mi.", @"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.", @"あのイーハトーヴォの\nすきとおった風、\n夏でも底に冷たさをもつ青いそら、\nうつくしい森で飾られたモーリオ市、\n郊外のぎらぎらひかる草の波。"];
+    _textPool = @[@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sodales diam sed turpis mattis dictum. In laoreet porta eleifend. Ut eu nibh sit amet est iaculis faucibus.",@"initWithBitmapDataPlanes:pixelsWide:pixelsHigh:bitsPerSample:samplesPerPixel:hasAlpha:isPlanar:colorSpaceName:bitmapFormat:bytesPerRow:bitsPerPixel:", @"祇辻飴葛蛸鯖鰯噌庖箸", @"Nam in vehicula mi.", @"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.", @"あのイーハトーヴォの\nすきとおった風、\n夏でも底に冷たさをもつ青いそら、\nうつくしい森で飾られたモーリオ市、\n郊外のぎらぎらひかる草の波。"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,19 +52,19 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
 // addボタンで呼ばれる動作
 - (void)insertNewObject:(id)sender
 {
-    if (!_objects) {
-        _objects = [[NSMutableArray alloc] init];
+    if (!_outputArray) {
+        _outputArray = [[NSMutableArray alloc] init];
     }
     
     // 追加
     // データ作成
-    int dataIndex = arc4random() % _textArray.count;
-    NSString *string = _textArray[dataIndex];
+    int dataIndex = arc4random() % _textPool.count;
+    NSString *string = _textPool[dataIndex];
     //NSDate *date = [NSDate date];
     NSDictionary *dataDictionary = @{@"string": string};
     
     // データ挿入
-    [_objects insertObject:dataDictionary atIndex:0];
+    [_outputArray insertObject:dataDictionary atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     // テーブルビュー更新
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -76,7 +76,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
     CustomTableViewCell *customCell = (CustomTableViewCell *)cell;
     
     // メインラベルに文字列を設定
-    NSDictionary *dataDictionary = _objects[indexPath.row];
+    NSDictionary *dataDictionary = _outputArray[indexPath.row];
     customCell.bodyLabel.text = dataDictionary[@"string"];
     
     /*
@@ -90,7 +90,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _objects.count;
+    return _outputArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -133,7 +133,7 @@ static NSString * const TableViewCustomCellIdentifier = @"XibCustomCell";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_objects removeObjectAtIndex:indexPath.row];
+        [_outputArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
